@@ -11,9 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure Mock In-Memory Database
+// Configure SQLite Database (arquivo local, sem necessidade de instalação)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("SegurancaDB"));
+    options.UseSqlite("Data Source=seguranca.db"));
 
 // Configure JWT Authentication
 var key = Encoding.ASCII.GetBytes("S3cr3t_K3y_That_Is_L0ng_En0ugh_F0r_HMAC_SHA256");
@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Ensure database is seeded (In-Memory database doesn't need EnsureCreated/Migrate like SQL)
+// Ensure database is created and seeded
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();

@@ -1,22 +1,22 @@
 # Lab de Segurança Web - Newton Paiva
 ## Hackathon Defensivo: Encontrar e Corrigir
 
-Este projeto é uma API .NET 8 intencionalmente vulnerável, criada para fins educacionais na disciplina de Arquitetura de Aplicações Web.
+Este projeto é uma API .NET 6 intencionalmente vulnerável, criada para fins educacionais na disciplina de Arquitetura de Aplicações Web.
 
 ### 🛠️ Tecnologias
-- .NET 8 / C#
+- .NET 6 / C#
 - Entity Framework Core com SQLite
 - JWT Authentication
 
 ### 🚀 Como Rodar
-1. Certifique-se de ter o [.NET SDK 8](https://dotnet.microsoft.com/download/dotnet/8.0) instalado.
+1. Certifique-se de ter o [.NET SDK 6](https://dotnet.microsoft.com/download/dotnet/6.0) instalado.
 2. Clone o repositório.
 3. No terminal, execute:
    ```bash
    dotnet run
    ```
-4. A API estará disponível em `http://localhost:5000` (ou similar, verifique o terminal).
-5. O Swagger pode ser acessado em `http://localhost:5000/swagger`.
+4. A API estará disponível em `http://localhost:5275`.
+5. O Swagger pode ser acessado em `http://localhost:5275/swagger`.
 
 ### 🛡️ Sua Missão
 O sistema simula uma loja virtual com diversas falhas de segurança. Você deve atuar como auditor e desenvolvedor:

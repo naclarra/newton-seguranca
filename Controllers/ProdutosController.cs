@@ -15,23 +15,13 @@ public class ProdutosController : ControllerBase
         _db = db;
     }
 
-    // VULNERABILIDADE 01: Injeção SQL (Simulada para In-Memory)
+    // VULNERABILIDADE 01: Injeção SQL REAL
     [HttpGet("buscar")]
     public IActionResult Buscar(string nome)
     {
-        // Em um banco real, usaríamos FromSqlRaw.
-        // No In-Memory, vamos simular a falha permitindo "payloads" via LINQ (ex: q=' OR 1=1)
-        // Nota didática: O In-Memory não processa SQL real, então o aluno aprenderá o CONCEITO.
-        
-        // Simulação de comportamento vulnerável:
-        var produtos = _db.Produtos.ToList();
-        
-        if (nome.Contains("' OR 1=1")) 
-        {
-             return Ok(produtos); // Simula o efeito de bypass do SQL Injection
-        }
-
-        var resultado = produtos.Where(p => p.Nome == nome).ToList();
+        // VULNERÁVEL: Concatenação direta de entrada do usuário em SQL
+        var query = $"SELECT * FROM Produtos WHERE Nome LIKE '%{nome}%'";
+        var resultado = _db.Produtos.FromSqlRaw(query).ToList();
         return Ok(resultado);
     }
 

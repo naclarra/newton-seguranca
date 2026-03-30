@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(html|cshtml|xml|yml|yaml\\)$\")",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)",
+      "Bash(taskkill:*)",
+      "Bash(rm -f seguranca.db)",
+      "Bash(timeout 8 dotnet run)"
+    ]
+  }
+}
