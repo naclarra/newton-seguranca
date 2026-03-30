@@ -1,0 +1,20 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Busca de Produtos</title>
+</head>
+<body>
+    <h2>Resultados para: @Html.Raw(ViewBag.Termo)</h2>
+    <p>Nenhum produto encontrado.</p>
+    
+    <hr />
+    <form method="get" action="/busca">
+        <input type="text" name="q" placeholder="Buscar..." />
+        <button type="submit">Buscar</button>
+    </form>
+</body>
+</html>

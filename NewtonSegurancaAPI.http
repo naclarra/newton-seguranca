@@ -1,0 +1,6 @@
+@NewtonSegurancaAPI_HostAddress = http://localhost:5275
+
+GET {{NewtonSegurancaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
