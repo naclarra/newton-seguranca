@@ -18,23 +18,38 @@ public class UsuariosController : ControllerBase
         _db = db;
     }
 
-    // VULNERABILIDADE 04: Exposição de Dados Sensíveis
+
     [Authorize]
     [HttpGet("{id}")]
     public IActionResult GetPerfil(int id)
     {
-        // VULNERÁVEL: Retorna a entidade completa (com SenhaHash e TokenRecuperacao)
         var usuario = _db.Usuarios.Find(id);
         if (usuario == null) return NotFound();
-        return Ok(usuario);
+
+        // Em vez de retornar o objeto 'usuario' inteiro (com senha e tudo),
+        // retornamos apenas o que é seguro.
+        return Ok(new 
+        {
+            usuario.Id,
+            usuario.Nome,
+            usuario.Email,
+            usuario.Role
+        });
     }
 
-    // VULNERABILIDADE 03: Quebra de Controle de Acesso (IDOR)
     [Authorize]
     [HttpGet("{userId}/pedidos")]
     public IActionResult MeusPedidos(int userId)
     {
-        // VULNERÁVEL: Não verifica se o userId solicitado pertence ao usuário logado
+
+        var identity = User.Identity as ClaimsIdentity;
+        var loggedUserId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (loggedUserId != userId.ToString())
+        {
+            return Forbid(); 
+        }
+
         var pedidos = _db.Pedidos
             .Where(p => p.UsuarioId == userId)
             .ToList();
@@ -42,9 +57,9 @@ public class UsuariosController : ControllerBase
         return Ok(pedidos);
     }
 
-    // VULNERABILIDADE: Missing Function Level Access Control
+   
+    [Authorize(Roles = "Admin")]
     [HttpGet("admin/all")]
-    // VULNERÁVEL: Falta [Authorize(Roles = "Admin")]
     public IActionResult GetAllUsuarios()
     {
         return Ok(_db.Usuarios.ToList());

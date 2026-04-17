@@ -22,13 +22,14 @@ public class AvaliacoesController : ControllerBase
         return Ok(avaliacoes);
     }
 
-    // VULNERABILIDADE: XSS Armazenado
+    // CORREÇÃO: XSS A
     [HttpPost]
     public IActionResult Criar([FromBody] Avaliacao avaliacao)
     {
-        // VULNERÁVEL: Salva o comentário sem nenhuma sanitização
+        avaliacao.Comentario = System.Web.HttpUtility.HtmlEncode(avaliacao.Comentario);
+        avaliacao.UsuarioNome = System.Web.HttpUtility.HtmlEncode(avaliacao.UsuarioNome);
+
         _db.Avaliacoes.Add(avaliacao);
         _db.SaveChanges();
         return Ok(avaliacao);
     }
-}

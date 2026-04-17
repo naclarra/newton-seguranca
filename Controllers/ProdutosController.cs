@@ -15,13 +15,20 @@ public class ProdutosController : ControllerBase
         _db = db;
     }
 
-    // VULNERABILIDADE 01: Injeção SQL REAL
+
     [HttpGet("buscar")]
     public IActionResult Buscar(string nome)
     {
-        // VULNERÁVEL: Concatenação direta de entrada do usuário em SQL
-        var query = $"SELECT * FROM Produtos WHERE Nome LIKE '%{nome}%'";
-        var resultado = _db.Produtos.FromSqlRaw(query).ToList();
+        if (string.IsNullOrEmpty(nome))
+        {
+            return Ok(_db.Produtos.ToList());
+        }
+
+       
+        var resultado = _db.Produtos
+            .Where(p => p.Nome.Contains(nome))
+            .ToList();
+
         return Ok(resultado);
     }
 
